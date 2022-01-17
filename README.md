@@ -14,3 +14,7 @@ Run this commands:
 	php artisan serve  
 
 Open browser:  [http://localhost:8000](http://localhost:8000)
+
+Run artisan command for get the list of all known planets from [SWAPI](https://swapi.py4e.com) and save to database.
+
+	php artisan explorer:planets
