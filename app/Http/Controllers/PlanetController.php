@@ -12,11 +12,26 @@ class PlanetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+//     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Added filter order by: diameter, rotation_period or gravity
+        if ($request->has('filter')) {
+
+            if(!$request->has('sort')) {
+                $planets = Planet::orderBy($request->get('filter'), 'asc')->paginate();
+            }
+            else {
+                $planets = Planet::orderBy($request->get('filter'))->paginate();
+            }
+
+            return view('planets')->with(['planets' => $planets]);
+        }
+
+        $planets = Planet::latest()->paginate();
+
+        return view('planets')->with(['planets' => $planets]);
     }
 
     /**
@@ -83,11 +98,5 @@ class PlanetController extends Controller
     public function destroy(Planet $planet)
     {
         //
-    }
-
-
-    public function search(Request $request)
-    {
-        return $request->all();
     }
 }

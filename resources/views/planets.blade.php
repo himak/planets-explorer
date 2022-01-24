@@ -6,38 +6,47 @@
 
         <title>{{ __('Planets Explorer') }}</title>
 
-        <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
-    <body class="bg-dark d-flex justify-content-center align-items-center vh-100">
+    <body>
+        <div class="container">
+            <div class="row ">
+                <div class="col-10 offset-1 col-sm-6 offset-sm-3">
+                    <h1 class="text-warning text-center my-3">{{ __('Planets Explorer') }}</h1>
 
-        <div>
-            <h1 class="text-warning text-center mb-3">{{ __('Planets Explorer') }}</h1>
+                        <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                            <tr>
+                                <th><a href="{{ route('planet.index') }}/?filter=id" class="{{ Request::get('filter') === 'id' ? 'active' : '' }}">#</a></th>
+                                <th class="col-4"><a href="{{ route('planet.index') }}/?filter=name" class="{{ Request::get('filter') === 'name' ? 'active' : '' }}">name</a></th>
+                                <th class="col-1 text-nowrap"><a href="{{ route('planet.index') }}/?filter=rotation_period" class="{{ Request::get('filter') === 'rotation_period' ? 'active' : '' }}">rotation period</a></th>
+                                <th class="col-2"><a href="{{ route('planet.index') }}/?filter=diameter" class="{{ Request::get('filter') === 'diameter' ? 'active' : '' }}">diameter</a></th>
+                                <th class="col-4 text-nowrap"><a href="{{ route('planet.index') }}/?filter=gravity" class="{{ Request::get('filter') === 'gravity' ? 'active' : '' }}">gravity</a></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($planets as $planet)
+                                <tr>
+                                    <td>{{ $planet->id }}</td>
+                                    <td>{{ $planet->name }}</td>
+                                    <td>{{ $planet->rotation_period }}</td>
+                                    <td>{{ $planet->diameter }}</td>
+                                    <td class="text-nowrap">{{ $planet->gravity }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-            <form action="#" method="POST">
-                @csrf
+                    <div class="d-flex justify-content-center">
+                        {{ $planets->appends(['filter' => Request::get('filter')])->links() }}
+                    </div>
 
-                <caption class="visually-hidden">{{ __('Search Planet Form') }}</caption>
-
-                <div class="input-group input-group-lg">
-                    <span class="input-group-text bg-dark text-warning border-warning" id="addon-wrapping">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pin-map" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z"/>
-                            <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
-                        </svg>
-                    </span>
-
-                    <label for="name" class="visually-hidden">{{ __('planet name') }}</label>
-                    <input type="text" class="form-control bg-dark border-warning text-warning" name="name" id="name" placeholder="{{ __('planet name') }}">
-
-                    <button class="btn btn-outline-warning" type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                        </svg><span class="visually-hidden">Find</span>
-                    </button>
                 </div>
-            </form>
+            </div>
         </div>
 
-        <script src="{{ mix('/js/app.js') }}"></script>
+        <script src="{{ asset('/js/app.js') }}"></script>
     </body>
 </html>

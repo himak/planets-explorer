@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('planets');
-});
+Route::get('/', [App\Http\Controllers\PlanetController::class, 'index'])->name('planet.index');

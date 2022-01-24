@@ -1,7 +1,30 @@
+// Colors
+$yellow: #f5a816;
+$dark:  #2e2d39;
+
 // Body
-$body-bg: #f8fafc;
+$body-bg: $dark;
+
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+// Table
+.table a {
+  text-decoration: none;
+  color: #fff;
+
+  &.active {
+    color: $yellow;
+  }
+}
+
+// Pagination
+$pagination-color:                  #fff;
+$pagination-bg:                     $dark;
+$pagination-hover-color:            $yellow;
+$pagination-hover-bg:               $dark;
+$pagination-active-color:           $dark;
+$pagination-active-bg:              $yellow;
