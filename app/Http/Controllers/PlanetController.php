@@ -19,12 +19,7 @@ class PlanetController extends Controller
         // Added filter order by: diameter, rotation_period or gravity
         if ($request->has('filter')) {
 
-            if(!$request->has('sort')) {
-                $planets = Planet::orderBy($request->get('filter'), 'asc')->paginate();
-            }
-            else {
-                $planets = Planet::orderBy($request->get('filter'))->paginate();
-            }
+            $planets = Planet::orderBy($request->get('filter'))->paginate();
 
             return view('planets')->with(['planets' => $planets]);
         }

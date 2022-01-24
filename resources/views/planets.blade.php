@@ -12,9 +12,11 @@
         <div class="container">
             <div class="row ">
                 <div class="col-10 offset-1 col-sm-6 offset-sm-3">
-                    <h1 class="text-warning text-center my-3">{{ __('Planets Explorer') }}</h1>
+                    <a href="{{ url('/') }}" class="text-decoration-none">
+                        <h1 class="text-warning text-center my-3">{{ __('Planets Explorer') }}</h1>
+                    </a>
 
-                        <div class="table-responsive">
+                    <div class="table-responsive">
                         <table class="table table-dark table-hover">
                             <thead>
                             <tr>
