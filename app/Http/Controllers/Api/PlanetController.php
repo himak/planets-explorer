@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PlanetResource;
 use App\Models\Planet;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PlanetController extends Controller
 {
@@ -63,5 +62,29 @@ class PlanetController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    /**
+     * Get count planets with distribution of the specific terrain
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function terrain(Request $request): JsonResponse
+    {
+        $countOfPlanet = Planet::count();
+
+        $countOfPlanetWithTerrain = Planet::where('terrain', 'LIKE', '%' . $request->terrain . '%')->count();
+
+        $percentage = $countOfPlanetWithTerrain * 100 / $countOfPlanet;
+
+        return response()->json([
+            'searchTerrain' => $request->terrain,
+            'countOfPlanet' => $countOfPlanet,
+            'countOfPlanetWithTerrain' => $countOfPlanetWithTerrain,
+            'percentageOfPlanet' => $percentage
+
+        ]);
     }
 }

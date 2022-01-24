@@ -27,3 +27,8 @@ Allow urls:
 List of names of 10 largest planets
 
     /api/planets
+
+Distribution of the specific terrain on planets
+
+    /api/planets/terrain/{terrain}
+    /api/planets/terrain/mountains
