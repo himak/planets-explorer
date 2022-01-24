@@ -60,11 +60,16 @@ class GetPlanets extends Command
 
                 $planet = $result->results[$i];
 
+                $name = $planet->name !== 'unknown' ? $planet->name : null;
+                $rotation_period = $planet->rotation_period !== 'unknown' ? $planet->rotation_period : null;
+                $diameter = $planet->diameter !== 'unknown' ? $planet->diameter : null;
+                $gravity = $planet->gravity !== 'unknown' ? $planet->gravity : null;
+
                 $planetId = DB::table('planets')->insertGetId([
-                    'name' => $planet->name,
-                    'rotation_period' => $planet->rotation_period,
-                    'diameter' => $planet->diameter,
-                    'gravity' => $planet->gravity,
+                    'name' => $name,
+                    'rotation_period' => $rotation_period,
+                    'diameter' => $diameter,
+                    'gravity' => $gravity,
                 ]);
 
                 // TODO: Import residents of this planet to database
