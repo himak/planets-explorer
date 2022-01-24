@@ -64,12 +64,16 @@ class GetPlanets extends Command
                 $rotation_period = $planet->rotation_period !== 'unknown' ? $planet->rotation_period : null;
                 $diameter = $planet->diameter !== 'unknown' ? $planet->diameter : null;
                 $gravity = $planet->gravity !== 'unknown' ? $planet->gravity : null;
+                $population = $planet->population !== 'unknown' ? $planet->population : null;
+                $terrain = $planet->terrain !== 'unknown' ? $planet->terrain : null;
 
                 $planetId = DB::table('planets')->insertGetId([
                     'name' => $name,
                     'rotation_period' => $rotation_period,
                     'diameter' => $diameter,
                     'gravity' => $gravity,
+                    'population' => $population,
+                    'terrain' => $terrain,
                 ]);
 
                 // TODO: Import residents of this planet to database
