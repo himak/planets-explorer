@@ -14,20 +14,10 @@ class PlanetController extends Controller
      *
 //     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        // Added filter order by: diameter, rotation_period or gravity
-        if ($request->has('filter')) {
-
-            $planets = Planet::orderBy($request->get('filter'))->paginate();
-        }
-        else {
-            $planets = Planet::latest()->paginate();
-        }
-
         return view('planets')->with([
-            'title' => 'Planets Explorer',
-            'planets' => $planets ?? null
+            'title' => __('Planets Explorer'),
         ]);
     }
 

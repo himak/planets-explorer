@@ -9,9 +9,10 @@
         @section('style')
             <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         @show
+
+        @livewireStyles
     </head>
     <body>
-
         @include('layouts.navigation')
 
         @hasSection('content')
@@ -22,5 +23,6 @@
             <script src="{{ asset('/js/app.js') }}"></script>
         @show
 
+        @livewireScripts
     </body>
 </html>
