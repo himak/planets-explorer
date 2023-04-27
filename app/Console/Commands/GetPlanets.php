@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Planet;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class GetPlanets extends Command
 {
@@ -41,69 +43,52 @@ class GetPlanets extends Command
         // Import Planets
 
         // Get API urls
-//        $url = 'https://swapi.dev/api/planets';
-        $url = 'https://swapi.py4e.com/api/planets';
+        $url = config('api.url');
 
-        $this->info('Start import Planets to database:');
-
+        // Destroy existing planets
         DB::table('planets')->truncate();
 
-        $this->line('1%');
+        // Dubug info
+        $this->info('Start import Planets to database:');
+        echo('1%');
 
         do {
-            $json = file_get_contents($url);
-            $result = json_decode($json);
-            $url = $result->next;
+            $response = Http::get($url);
+
+            $page = $response->json('next'); // paginate for next page
+            $planets = $response->collect('results');
 
             // Import Planets to DB
-            for ($i=0; $i < count($result->results); $i++) {
-
+            $planets->each(function ($planet, $key) {
                 // Dubug info
                 echo ".";
-
-                $planet = $result->results[$i];
-
-                $name = $planet->name !== 'unknown' ? $planet->name : null;
-                $rotation_period = $planet->rotation_period !== 'unknown' ? $planet->rotation_period : null;
-                $diameter = $planet->diameter !== 'unknown' ? $planet->diameter : null;
-                $gravity = $planet->gravity !== 'unknown' ? $planet->gravity : null;
-                $population = $planet->population !== 'unknown' ? $planet->population : null;
-                $terrain = $planet->terrain !== 'unknown' ? $planet->terrain : null;
-
-                $planetId = DB::table('planets')->insertGetId([
-                    'name' => $name,
-                    'rotation_period' => $rotation_period,
-                    'diameter' => $diameter,
-                    'gravity' => $gravity,
-                    'population' => $population,
-                    'terrain' => $terrain,
-                ]);
+                Planet::query()->create($planet);
+            });
 
                 // TODO: Import residents of this planet to database
 //                for ($i=0; $i < count($planet->residents); $i++) {
-////                    $json = file_get_contents($url);
-//////                    $result = json_decode($json);
-//////                    $url = $result->next;
-////                    print_r($planet->residents);
+//                    $json = file_get_contents($url);
+//                    $result = json_decode($json);
+//                    $url = $result->next;
+//                    print_r($planet->residents);
 //                    foreach($planet->residents as $resident) {
 //
 //                        $json = file_get_contents($resident);
 //                        $result = json_decode($json);
 //
 //                        // species
-////                        $result->species;
-////
-////                        DB::table('planet_resident')->insertGetId([
-////                            'planet_id' => $planetId,
-////                            'resident_id' => $resident,
-////                        ]);
+//                        $result->species;
+//
+//                        DB::table('planet_resident')->insertGetId([
+//                            'planet_id' => $planetId,
+//                            'resident_id' => $resident,
+//                        ]);
 //                        print_r($result->species);
 //                    }
 //                    echo '\n\n';
 //                }
-            }
 
-        } while($result->next);
+        } while($page);
 
         $this->line('100%');
         $this->info('Import Planets done.');
