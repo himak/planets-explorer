@@ -16,7 +16,7 @@ class PlanetController extends Controller
      */
     public function index()
     {
-        return Planet::where('population', '!=', NULL)->orderBy('population', 'desc')->limit(10)->get(['name','population']);
+        //
     }
 
     /**
@@ -64,6 +64,16 @@ class PlanetController extends Controller
         //
     }
 
+    /**
+     * Get list of names of top largest planets
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function top(Request $request): JsonResponse
+    {
+        return Planet::where('population', '!=', NULL)->orderBy('population', 'desc')->limit($request->number)->get(['name','population']);
+    }
 
     /**
      * Get count planets with distribution of the specific terrain

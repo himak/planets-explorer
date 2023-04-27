@@ -20,13 +20,15 @@ class PlanetController extends Controller
         if ($request->has('filter')) {
 
             $planets = Planet::orderBy($request->get('filter'))->paginate();
-
-            return view('planets')->with(['planets' => $planets]);
+        }
+        else {
+            $planets = Planet::latest()->paginate();
         }
 
-        $planets = Planet::latest()->paginate();
-
-        return view('planets')->with(['planets' => $planets]);
+        return view('planets')->with([
+            'title' => 'Planets Explorer',
+            'planets' => $planets ?? null
+        ]);
     }
 
     /**

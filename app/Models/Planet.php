@@ -38,4 +38,13 @@ class Planet extends Model
     {
         return $value ?? 'unknown';
     }
+
+
+    /**
+     * The residents that belong to the planet.
+     */
+    public function residents()
+    {
+        return $this->belongsToMany(Resident::class);
+    }
 }

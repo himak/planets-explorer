@@ -19,5 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Planets
-Route::get('/planets', [App\Http\Controllers\Api\PlanetController::class, 'index']);
+Route::get('/planets/top-{number}', [App\Http\Controllers\Api\PlanetController::class, 'index'])->where('number', '[0-9]+');
 Route::get('/planets/terrain/{terrain}', [App\Http\Controllers\Api\PlanetController::class, 'terrain']);

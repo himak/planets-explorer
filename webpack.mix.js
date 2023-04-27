@@ -15,5 +15,5 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps()
     .version()
-    .browserSync('localhost:8000')
+    .browserSync('http://planets-explorer.test')
     .disableNotifications();
