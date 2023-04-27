@@ -14,7 +14,7 @@ class AddPopulationAndTerrainToPlanetsTable extends Migration
     public function up()
     {
         Schema::table('planets', function (Blueprint $table) {
-            $table->unsignedBigInteger('population')->nullable()->after('gravity');
+            $table->string('population')->nullable()->after('gravity');
             $table->string('terrain')->nullable()->after('population');
         });
     }
