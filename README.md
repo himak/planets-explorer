@@ -26,9 +26,13 @@ Allow urls:
 
 List of names of 10 largest planets
 
-    /api/planets
+    GET: /api/planets/top-10
 
 Distribution of the specific terrain on planets
 
-    /api/planets/terrain/{terrain}
-    /api/planets/terrain/mountains
+    GET: /api/planets/terrain/{terrain}
+    GET: /api/planets/terrain/mountains
+
+Distribution of the species living in all planets (using Planet->Resident relation)
+
+    TODO

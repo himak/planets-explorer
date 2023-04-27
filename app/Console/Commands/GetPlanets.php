@@ -38,14 +38,17 @@ class GetPlanets extends Command
      */
     public function handle()
     {
+        // Import Planets
+
         // Get API urls
+//        $url = 'https://swapi.dev/api/planets';
         $url = 'https://swapi.py4e.com/api/planets';
 
-        echo "Start import Planets to database:\n";
+        $this->info('Start import Planets to database:');
 
         DB::table('planets')->truncate();
 
-        echo "1%";
+        $this->line('1%');
 
         do {
             $json = file_get_contents($url);
@@ -77,12 +80,38 @@ class GetPlanets extends Command
                 ]);
 
                 // TODO: Import residents of this planet to database
+//                for ($i=0; $i < count($planet->residents); $i++) {
+////                    $json = file_get_contents($url);
+//////                    $result = json_decode($json);
+//////                    $url = $result->next;
+////                    print_r($planet->residents);
+//                    foreach($planet->residents as $resident) {
+//
+//                        $json = file_get_contents($resident);
+//                        $result = json_decode($json);
+//
+//                        // species
+////                        $result->species;
+////
+////                        DB::table('planet_resident')->insertGetId([
+////                            'planet_id' => $planetId,
+////                            'resident_id' => $resident,
+////                        ]);
+//                        print_r($result->species);
+//                    }
+//                    echo '\n\n';
+//                }
             }
 
         } while($result->next);
 
-        echo "100%\n";
-        echo "Import Planets done.\n";
+        $this->line('100%');
+        $this->info('Import Planets done.');
+
+        // TODO: Import People
+
+
+        // TODO: Import Residents of Planets
 
         return 0;
     }
