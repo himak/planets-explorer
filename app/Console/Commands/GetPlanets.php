@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Planet;
+use App\Models\Resident;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -49,54 +51,79 @@ class GetPlanets extends Command
         DB::table('planets')->truncate();
 
         // Dubug info
-        $this->info('Start import Planets to database:');
-        echo('1%');
+        $this->info('Please seat and continue drinking your coffee ☕️');
+        $this->info('Searching Planets for import...');
+
+        sleep(1);
+        echo('3..');
+
+        sleep(1);
+        echo('2..');
+
+        sleep(1);
+        echo('1..');
+
+        sleep(1);
+        echo('starting..');
 
         do {
             $response = Http::get($url);
-
-            $page = $response->json('next'); // paginate for next page
             $planets = $response->collect('results');
+            $url = $response->json('next'); // paginate for next page
 
-            // Import Planets to DB
+            // Create Planets
             $planets->each(function ($planet, $key) {
+
                 // Dubug info
-                echo ".";
-                Planet::query()->create($planet);
+                echo '.' . Arr::random(['🪐', '💫', '🌎', '🌖']) . '.';
+
+                $planet['rotation_period'] =  $planet['rotation_period'] !== 'unknown' ? $planet['rotation_period'] : null;
+                $planet['diameter'] =  $planet['diameter'] !== 'unknown' ? $planet['diameter'] : null;
+                $planet['population'] = $planet['population'] !== 'unknown' ? $planet['population'] : null;
+
+                $planetId = Planet::query()->create($planet);
+
+                // Create Residents of Planets
+                $residents = collect($planet['residents']);
+
+                // Dubug info
+                echo '.' . Arr::random(['🦾', '🥶', '🐫', '🦄']) . '.';
+
+                $residents->each(function($residentUrl, $key) use ($planetId) {
+
+                    $response = Http::get($residentUrl);
+
+                    $resident = $response->json();
+
+                    // If Resident have a one species, get name from API and save to the Resident
+                    if (count($resident['species'])) {
+
+                        echo (".");
+
+                        // Get info about species
+                        $species = Http::get($resident['species'][0]);
+
+                        // Find Resident and update or create as new
+                        $residentID = Resident::query()->updateOrCreate(
+                            [
+                                'name' =>  $resident['name'],
+                                'species' => $species->json('name')
+                            ],
+                            [
+                                'name' => $resident['name'],
+                                'species' => $species->json('name')
+                            ]
+                        );
+
+                        // Attach Resident to thd Planet
+                        $planetId->residents()->attach($residentID);
+                    };
+                });
             });
+        } while($url);
 
-                // TODO: Import residents of this planet to database
-//                for ($i=0; $i < count($planet->residents); $i++) {
-//                    $json = file_get_contents($url);
-//                    $result = json_decode($json);
-//                    $url = $result->next;
-//                    print_r($planet->residents);
-//                    foreach($planet->residents as $resident) {
-//
-//                        $json = file_get_contents($resident);
-//                        $result = json_decode($json);
-//
-//                        // species
-//                        $result->species;
-//
-//                        DB::table('planet_resident')->insertGetId([
-//                            'planet_id' => $planetId,
-//                            'resident_id' => $resident,
-//                        ]);
-//                        print_r($result->species);
-//                    }
-//                    echo '\n\n';
-//                }
-
-        } while($page);
-
-        $this->line('100%');
-        $this->info('Import Planets done.');
-
-        // TODO: Import People
-
-
-        // TODO: Import Residents of Planets
+        $this->newLine(1);
+        $this->info('Import Planets with Residents is done.');
 
         return 0;
     }
