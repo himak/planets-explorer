@@ -70,38 +70,4 @@ class PlanetController extends Controller
     {
         //
     }
-
-    /**
-     * Get list of names of top largest planets
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function top(Request $request): JsonResponse
-    {
-        return Planet::where('population', '!=', NULL)->orderBy('population', 'desc')->limit($request->number)->get(['name','population']);
-    }
-
-    /**
-     * Get count planets with distribution of the specific terrain
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function terrain(Request $request): JsonResponse
-    {
-        $countOfPlanet = Planet::count();
-
-        $countOfPlanetWithTerrain = Planet::where('terrain', 'LIKE', '%' . $request->terrain . '%')->count();
-
-        $percentage = $countOfPlanetWithTerrain * 100 / $countOfPlanet;
-
-        return response()->json([
-            'searchTerrain' => $request->terrain,
-            'countOfPlanet' => $countOfPlanet,
-            'countOfPlanetWithTerrain' => $countOfPlanetWithTerrain,
-            'percentageOfPlanet' => $percentage
-
-        ]);
-    }
 }

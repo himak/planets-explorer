@@ -26,7 +26,7 @@ Allow urls:
 
 List of names of 10 largest planets
 
-    GET: /api/planets/top-10
+    GET: /api/planets
 
 Distribution of the specific terrain on planets
 

@@ -19,5 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Planets
-Route::get('/planets/top-{number}', [App\Http\Controllers\Api\PlanetController::class, 'index'])->where('number', '[0-9]+');
-Route::get('/planets/terrain/{terrain}', [App\Http\Controllers\Api\PlanetController::class, 'terrain']);
+
+Route::apiResource('planets', \App\Http\Controllers\Api\PlanetController::class)->only('index')->names('api.planets');
+
+Route::get('/planets/terrain/{terrain}', [\App\Http\Controllers\Api\PlanetsByTerrainController::class, '__invoke'])->name('api.planets.terrain');
