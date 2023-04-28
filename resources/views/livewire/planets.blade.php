@@ -6,8 +6,8 @@
                 <thead>
                 <tr>
                     <th class="col-1">#</th>
-                    <th class="col-4">name</th>
-                    <th class="col-1 text-nowrap">
+                    <th class="col-3">name</th>
+                    <th class="col-2 text-nowrap">
                         <a wire:click="sortBy('rotation_period')"
                            class="{{ $sortBy === 'rotation_period' ? 'text-warning' : '' }}"
                         >rotation period</a>
