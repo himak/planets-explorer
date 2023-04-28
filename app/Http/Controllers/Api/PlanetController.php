@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PlanetResource;
 use App\Models\Planet;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,11 +13,17 @@ class PlanetController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+//     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return PlanetResource::collection(
+            Planet::query()
+                ->select('name')
+                ->where('diameter', '!=','unknown')
+                ->orderByRaw('ABS(diameter) DESC')
+                ->paginate(10)
+        );
     }
 
     /**
